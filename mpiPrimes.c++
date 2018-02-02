@@ -10,16 +10,15 @@ using namespace std;
 
 bool testPrime(unsigned long n)
 {
-  if (n % 2L == 0) return false;
-  if (n % 3L == 0) return false;
-  unsigned long sqrtN = floor(sqrt(n));
+	if (n % 2L == 0) return false;
+	if (n % 3L == 0) return false;
+	unsigned long sqrtN = floor(sqrt(n));
 	unsigned long m = 6;
-  for (unsigned long k = 1; m <= sqrtN; ++k, m=6*k)
-  {
-//    unsigned long m = 6*k;
-    if (n % (m+1L) == 0 || n % (m-1L) == 0) return false;
-  }
-  return true;
+	for (unsigned long k = 1; m <= sqrtN; ++k, m=6*k)
+	{
+		if (n % (m+1L) == 0 || n % (m-1L) == 0) return false;
+	}
+	return true;
 }
 
 int main()
@@ -63,7 +62,7 @@ int main()
 					totalPrimeCount++;
 					cout << totalPrimeCount << ":\t" << primes[primeIndex] << endl;
 				}
-			
+				
 				MPI_Send(&range, 2, MPI_UNSIGNED_LONG, node, 0, MPI_COMM_WORLD);
 				range[0] = range[1]+1;
 				range[1] += RANGE_SIZE;				
@@ -82,7 +81,7 @@ int main()
 		while (range[0] != 0)
 		{
 			int localCount = 0;
-
+			
 			MPI_Recv(&range, 2, MPI_UNSIGNED_LONG, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			if (range[0] != 0)
 			{
@@ -93,12 +92,12 @@ int main()
 						primes[++localCount]=n;
 					}
 				}
-					
+				
 				primes[0]=localCount;
 				MPI_Send(&primes, localCount+1, MPI_UNSIGNED_LONG, 0, 0, MPI_COMM_WORLD);
 			}
 		}
 	}
-  MPI_Finalize();
-  return 0;
+	MPI_Finalize();
+	return 0;
 }
