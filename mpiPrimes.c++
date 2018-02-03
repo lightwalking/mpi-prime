@@ -2,7 +2,7 @@
 #include <cmath>
 #include <mpi.h>
 
-#define NUM_PRIMES 100000
+#define NUM_PRIMES 2000000
 #define RANGE_SIZE 1000
 #define PRIMES_ARRAY_SIZE 333
 
