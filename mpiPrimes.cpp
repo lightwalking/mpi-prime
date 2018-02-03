@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cmath>
 #include <mpi.h>
+#include "Wheel30.h"
+#include "MillerRabin.h"
 
 #define NUM_PRIMES 2000000
 #define RANGE_SIZE 1000
@@ -8,8 +10,14 @@
 
 using namespace std;
 
+Wheel30 wheel30;
+MillerRabin millerRabin;
+
 bool testPrime(unsigned long n)
 {
+	if (n < 75000L) return wheel30.isPrime(n);
+  return millerRabin.isPrime(n);
+/*
 	if (n % 2L == 0) return false;
 	if (n % 3L == 0) return false;
 	unsigned long sqrtN = floor(sqrt(n));
@@ -19,6 +27,7 @@ bool testPrime(unsigned long n)
 		if (n % (m+1L) == 0 || n % (m-1L) == 0) return false;
 	}
 	return true;
+*/
 }
 
 int main()
