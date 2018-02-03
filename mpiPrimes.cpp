@@ -41,7 +41,7 @@ int main()
 	
 	unsigned long primes[PRIMES_ARRAY_SIZE];
 	unsigned long range[2];
-	range[0] = 8;
+	range[0] = 9;
 	
 	if (world_rank == 0) 
 	{
@@ -94,7 +94,7 @@ int main()
 			MPI_Recv(&range, 2, MPI_UNSIGNED_LONG, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			if (range[0] != 0)
 			{
-				for (unsigned long n = range[0]; n < range[1]; ++n)
+				for (unsigned long n = range[0]; n < range[1]; n+=2)
 				{
 					if (testPrime(n))
 					{
