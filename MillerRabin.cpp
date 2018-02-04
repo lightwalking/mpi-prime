@@ -7,24 +7,37 @@ using namespace std;
 #include "Wheel30.h"
 
 
-// Utility function to do modular exponentiation.
-// It returns (x^y) % p
-NUMBER power(NUMBER x, NUMBER y, NUMBER p)
+NUMBER modmult(NUMBER a, NUMBER b, NUMBER mod)
 {
-	NUMBER res = 1;      // Initialize result
-	x = x % p;  // Update x if it is more than or
-	// equal to p
-	while (y > 0)
+	if (a == 0 || b < mod / a)
+		return (a*b)%mod;
+	NUMBER sum;
+	sum = 0;
+	while(b>0)
 	{
-		// If y is odd, multiply x with result
-		if (y & 1)
-			res = (res*x) % p;
-		
-		// y must be even now
-		y = y>>1; // y = y/2
-		x = (x*x) % p;
+		if(b&1)
+			sum = (sum + a) % mod;
+		a = (2*a) % mod;
+		b>>=1;
 	}
-	return res;
+	return sum;
+}
+
+// Utility function to do modular exponentiation.
+// It returns (a^b) % mod
+NUMBER power(NUMBER a, NUMBER b, NUMBER mod)
+{
+	NUMBER product,pseq;
+	product=1;
+	pseq=a%mod;
+	while(b>0)
+	{
+		if(b&1)
+			product=modmult(product,pseq,mod);
+		pseq=modmult(pseq,pseq,mod);
+		b>>=1;
+	}
+	return product;
 }
 
 // This function returns false if n is composite 
