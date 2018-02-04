@@ -4,6 +4,12 @@
 #include "Wheel30.h"
 #include "MillerRabin.h"
 
+#define PRINT_PERIODIC_STATUS_ONLY
+
+#ifdef PRINT_PERIODIC_STATUS_ONLY
+#include <time>
+#endif
+
 #ifndef NUMBER
 #define NUMBER unsigned long long
 #endif
@@ -15,19 +21,19 @@
 #define RANGE_SIZE 1000
 #define PRIMES_ARRAY_SIZE 333
 
-#define SET 200
+#define SET 50
 
 #if SET==250
 #define NUM_PRIMES 250000000
-#define FIRST_RANGE_START 4222245001ull
-#define FIRST_RANGE_END   4222246000ull
+#define FIRST_RANGE_START 4222245001ULL
+#define FIRST_RANGE_END   4222246000ULL
 #define INITIAL_PRIME_COUNT 200000441
 #endif
 
 #if SET==200
 #define NUM_PRIMES 200000000
-#define FIRST_RANGE_START 3121245001ull
-#define FIRST_RANGE_END   3121246000ull
+#define FIRST_RANGE_START 3121245001ULL
+#define FIRST_RANGE_END   3121246000ULL
 #define INITIAL_PRIME_COUNT 150000285
 #endif
 
@@ -97,12 +103,15 @@ int main()
 	
 	if (world_rank == 0) 
 	{
+#ifndef PRINT_PERIODIC_STATUS_ONLY					
 #if INITIAL_PRIME_COUNT==4
 		cout << "1:\t2" << endl;
 		cout << "2:\t3" << endl;
 		cout << "3:\t5" << endl;
 		cout << "4:\t7" << endl;
 #endif
+#endif
+
 		range[1] = FIRST_RANGE_END;
 		NUMBER totalPrimeCount=INITIAL_PRIME_COUNT;
 		int node;
@@ -123,7 +132,20 @@ int main()
 				for (int primeIndex=1; primeIndex<=localCount; ++primeIndex)
 				{
 					totalPrimeCount++;
+#ifdef PRINT_PERIODIC_STATUS_ONLY					
+					if (totalPrimeCount % 1000000 == 0)
+					{
+						time_t rawtime;
+						struct tm * timeinfo;
+						time(&rawtime);
+						timeinfo = localtime ( &rawtime );
+						cout << asctime(timeinfo) << '\t' 
+						<< totalPrimeCount << ":\t" 
+						<< primes[primeIndex] << endl;
+					}
+#else
 					cout << totalPrimeCount << ":\t" << primes[primeIndex] << endl;
+#endif
 				}
 
 				MPI_Send(&range, 2, MPI_NUMBER, node, 0, MPI_COMM_WORLD);
