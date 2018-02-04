@@ -126,23 +126,17 @@ bool MillerRabin::isPrime(NUMBER n)
 	int aSize = 0;
 //	if (n < 2047L) { aSet = a11; aSize = 1; }
 //	else 
-//	if (n < 1373653L) { aSet = a21; aSize = 2; }
-//	else if (n < 9080191L) { aSet = a24; aSize = 2; }
-//	else 
-//	if (n < 25326001L) { aSet = a25; aSize = 3; }
-//	else 
-//		if (n < 3215031751L) { aSet = a32; aSize = 4; }
-//	else 
-//	if (n < 4759123141L) { aSet = a33; aSize = 3; }
-//	else if (n < 1122004669633L) { aSet = a41a; aSize = 4; }
-//	else if (n < 2152302898747L) { aSet = a41b; aSize = 5; }
-//	else if (n < 3474749660383L) { aSet = a42; aSize = 6; }
-//	else 
-		if (n < 341550071728321L) { aSet = a49; aSize = 7; }
-	else 
-		if (n < 3825123056546413051L) { aSet = a62; aSize = 9; }
-	else 
-	{ aSet = a64; aSize = 12; }
+	if (n < 1373653L) { aSet = a21; aSize = 2; }
+	else if (n < 9080191L) { aSet = a24; aSize = 2; }
+//	else if (n < 25326001L) { aSet = a25; aSize = 3; }
+//	else if (n < 3215031751L) { aSet = a32; aSize = 4; }
+	else if (n < 4759123141L) { aSet = a33; aSize = 3; }
+	else if (n < 1122004669633L) { aSet = a41a; aSize = 4; }
+	else if (n < 2152302898747L) { aSet = a41b; aSize = 5; }
+	else if (n < 3474749660383L) { aSet = a42; aSize = 6; }
+	else if (n < 341550071728321L) { aSet = a49; aSize = 7; }
+	else if (n < 3825123056546413051L) { aSet = a62; aSize = 9; }
+	else { aSet = a64; aSize = 12; }
 	
 	// Find r such that n = 2^d * r + 1 for some r >= 1
 	NUMBER d = n - 1;
