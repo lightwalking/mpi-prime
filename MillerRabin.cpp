@@ -7,6 +7,29 @@ using namespace std;
 #include "Wheel30.h"
 
 
+// Utility function to do modular exponentiation.
+// It returns (a^b) % mod
+// Overflows for cases where p > 32 bits 
+NUMBER power32(NUMBER x, NUMBER y, NUMBER p)
+{
+	NUMBER res = 1;      // Initialize result
+	x = x % p;  // Update x if it is more than or equal to p
+	
+	while (y > 0ULL)
+	{
+		// If y is odd, multiply x with result
+		if (y & 1)
+		{
+			res = (res*x) % p;
+		}
+		
+		// y must be even now
+		y = y>>1; // y/2
+		x = (x * x) % p;
+	}
+	return res;
+}
+
 NUMBER modmult(NUMBER a, NUMBER b, NUMBER mod)
 {
 	if (a == 0 || b < mod / a)
@@ -25,8 +48,14 @@ NUMBER modmult(NUMBER a, NUMBER b, NUMBER mod)
 
 // Utility function to do modular exponentiation.
 // It returns (a^b) % mod
+// Protects against the overflow issue but is slower
+// so it calls the faster power32 for function
+// for mod <= 32 bits
 NUMBER power(NUMBER a, NUMBER b, NUMBER mod)
 {
+	if (mod <= 0xFFFFFFFF)
+		return power32(a, b, mod);
+	
 	NUMBER product,pseq;
 	product=1;
 	pseq=a%mod;
